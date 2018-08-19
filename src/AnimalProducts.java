@@ -4,20 +4,22 @@ public class AnimalProducts extends Products {
     private double storageTemperature;
 
     public static void main(String[] args) {
-        AnimalProducts animalProducts = new AnimalProducts();
-        System.out.println(animalProducts);
-        animalProducts.ID=1234;
-        animalProducts.price=123;
-        animalProducts.weight=1;
-        animalProducts.stockNumber=0;
-        animalProducts.validityDate = new Date();
-        animalProducts.storageTemperature = 37;
-        System.out.println(animalProducts);
-        System.out.println("folosesc constructorul de clonare");
-        AnimalProducts animalproducts1 = new AnimalProducts(animalProducts);
-        System.out.println(animalproducts1);
+        //AnimalProducts animalProducts = new AnimalProducts();
+        //System.out.println(animalProducts);
+        //animalProducts.setName();
+        //animalProducts.setID();
+        //animalProducts.setPrice();
+        //animalProducts.setWeight();
+        //animalProducts.setStockNumber();
+        //animalProducts.setValidityDate();
+        //animalProducts.setStorageTemperature();
+        //System.out.println(animalProducts);
+        //System.out.println("folosesc constructorul de clonare");
+        //AnimalProducts animalproducts1 = new AnimalProducts(animalProducts);
+        //System.out.println(animalproducts1);
     }
-    public AnimalProducts(){
+
+    public AnimalProducts() {
     }
 
     public AnimalProducts(AnimalProducts initial) {
@@ -27,8 +29,14 @@ public class AnimalProducts extends Products {
 
     @Override
     public String toString() {
-        return super.toString()+System.lineSeparator()+
-                "Storage temperature is: "+storageTemperature;
+        return super.toString() +
+                "Storage temperature is: " + storageTemperature + System.lineSeparator();
+    }
+
+    @Override
+    public void resetToDefault() {
+        super.resetToDefault();
+        storageTemperature = 0;
     }
 
     public double getStorageTemperature() {
@@ -36,12 +44,6 @@ public class AnimalProducts extends Products {
     }
 
     public void setStorageTemperature() {
-        storageTemperature = InputData.readDouble("Type storage temperature: ", "Type a number: ", Double.MIN_VALUE);
-    }
-
-    @Override
-    public void resetToDefault() {
-        super.resetToDefault();
-        storageTemperature = 0;
+        storageTemperature = InputData.readDouble("Type storage temperature: ", "Type a number: ");
     }
 }

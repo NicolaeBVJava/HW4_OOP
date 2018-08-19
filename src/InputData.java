@@ -5,108 +5,129 @@ import java.util.Scanner;
 
 class InputData {
     static Scanner sc;
+    static SimpleDateFormat dateFormat;
 
     static {
         sc = new Scanner(System.in);
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     }
 
     public static void main(String[] args) {
-        //readDate("Input validity date: ","Retry: ", "dd-MM-yyyy" ,new Date());
-        //System.out.println(readDouble("weight is: ", "Retry: ",0));
+        //System.out.println(readDouble("weight is: ", "Retry: ",0,10));
+        //System.out.println(readInteger("weight is: ", "greater  or equal than 0, less or equal than 5 ",0,5));
         //System.out.println(readDate("Validity date is: ", "Retry: ", new Date()));
         //System.out.println(readString("Product is: ", "Retry: "));
-        System.out.println(readYesNo("Continue? Yes(Y) No(N): ", "Retry: "));
+        //System.out.println(readYesNo("Continue? Yes(Y) No(N): ", "Retry: "));
     }
 
-    public static double readDouble(String inputMSG, String invalidInputMSG, double greaterOrEqual) {
-        System.out.print(inputMSG);
-        double number = 0;
-        boolean stop = false;
-        while (!stop) {
-            try {
-                if ((number = Double.parseDouble(sc.nextLine())) >= greaterOrEqual) {
-                    stop = true;
-                }
-            } catch (NumberFormatException exc) {
-            }
-            if (!stop) {
-                System.out.print(invalidInputMSG);
-            }
-        }
-        return number;
-    }
-
-    public static int readInteger(String inputMSG, String invalidInputMSG, int greaterOrEqual, int lessOrEqualThan) {
-        System.out.print(inputMSG);
-        int number = 0;
-        boolean stop = false;
-        while (!stop) {
-            try {
-                number = Integer.parseInt(sc.nextLine());
-                if ((number >= greaterOrEqual)&&(number <= lessOrEqualThan)) {
-                    stop = true;
-                }
-            } catch (NumberFormatException exc) {
-            }
-            if (!stop) {
-                System.out.print(invalidInputMSG);
-            }
-        }
-        return number;
-    }
-    public static Date readDate(String inputMsg, String invalidInputMsg, Date greaterOrEqual) {
+    public static double readDouble(String inputMsg, String invalidInputMsg) {
         System.out.print(inputMsg);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String stringDate = null;
-        Date validityDate = null;
-        boolean stop = false;
-        while (!stop) {
+        Double number = null;
+        while (number == null) {
             try {
-                stringDate = sc.nextLine();
-                validityDate = dateFormat.parse(stringDate);
-                if (dateFormat.format(validityDate).compareTo(dateFormat.format(greaterOrEqual)) >= 0) {
-                    stop = true;
+                number = Double.valueOf(sc.nextLine());
+            } catch (NumberFormatException nexc) {
+            }
+            if (number == null) {
+                System.out.print(invalidInputMsg);
+            }
+        }
+        return number;
+    }
+
+    public static double readDouble(String inputMsg, String invalidInputMsg, double greaterOrEqualThan) {
+        Double number = null;
+        do {
+            number = readDouble(inputMsg, invalidInputMsg);
+            if (number < greaterOrEqualThan) {
+                number = null;
+                inputMsg = invalidInputMsg;
+            }
+        } while (number == null);
+        return number;
+    }
+
+    public static double readDouble(String inputMsg, String invalidInputMsg, double greaterOrEqualThan, double lessOrEqualThan) {
+        Double number = null;
+        do {
+            number = readDouble(inputMsg, invalidInputMsg, greaterOrEqualThan);
+            if (number > lessOrEqualThan) {
+                number = null;
+                inputMsg = invalidInputMsg;
+            }
+        } while (number == null);
+        return number;
+    }
+
+    public static int readInteger(String inputMSG, String invalidInputMSG, int greaterOrEqualThan, int lessOrEqualThan) {
+        System.out.print(inputMSG);
+        Integer number = null;
+        while (number == null) {
+            try {
+                number = Integer.valueOf(sc.nextLine());
+                if ((number < greaterOrEqualThan) || (number > lessOrEqualThan)) {
+                    number = null;
                 }
+            } catch (NumberFormatException nexc) {
+            }
+            if (number == null) {
+                System.out.print(invalidInputMSG);
+            }
+        }
+        return number;
+    }
+
+    public static Date readDate(String inputMsg, String invalidInputMsg) {
+        System.out.print(inputMsg);
+        Date validityDate = null;
+        while (validityDate == null) {
+            try {
+                validityDate = dateFormat.parse(sc.nextLine());
             } catch (ParseException pexc) {
             }
-            if (!stop) {
+            if (validityDate == null) {
                 System.out.print(invalidInputMsg);
             }
         }
         return validityDate;
+    }
 
+    public static Date readDate(String inputMsg, String invalidInputMsg, Date greaterOrEqual) {
+        Date validityDate = null;
+        do {
+            validityDate = readDate(inputMsg, invalidInputMsg);
+            if (dateFormat.format(validityDate).compareTo(dateFormat.format(greaterOrEqual)) < 0) {
+                validityDate = null;
+                inputMsg = invalidInputMsg;
+            }
+        } while (validityDate == null);
+        return validityDate;
     }
 
     public static String readString(String inputMsg, String invalidInputMsg) {
         System.out.print(inputMsg);
         String string = null;
-        boolean stop = false;
-        while (!stop) {
-
-            if (!(string = sc.nextLine()).isEmpty()) {
-                stop = true;
+        while (string == null) {
+            if ((string = sc.nextLine()).isEmpty()) {
+                string = null;
             }
-            else {
+            if (string == null) {
                 System.out.print(invalidInputMsg);
             }
         }
         return string.trim().toUpperCase();
     }
-    public static YesNo readYesNo(String inputMsg, String invalidInputMsg){
-        System.out.println(inputMsg);
+
+    public static YesNo readYesNo(String inputMsg, String invalidInputMsg) {
+        System.out.print(inputMsg);
         YesNo option = null;
-        String stringOption = null;
-        while (option == null){
-            System.out.println("option is "+option);
+        while (option == null) {
             try {
-                stringOption = sc.nextLine().trim().toUpperCase();
-                option = YesNo.valueOf(stringOption);
-            }
-            catch(IllegalArgumentException exc) {
+                option = YesNo.valueOf(sc.nextLine().trim().toUpperCase());
+            } catch (IllegalArgumentException exc) {
                 System.out.print(invalidInputMsg);
             }
         }
         return option;
     }
-
 }

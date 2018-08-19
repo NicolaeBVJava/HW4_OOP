@@ -1,1 +1,1 @@
-public enum YesNo {Y,N}
+public enum YesNo {Y, N}
